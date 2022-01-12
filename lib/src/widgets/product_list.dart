@@ -12,12 +12,12 @@ class ProductList extends StatelessWidget {
     return ListView.builder(
       itemCount: products.length,
       itemBuilder: (BuildContext context, int index) {
-        return buildProduct(products[index]);
+        return buildProduct(context, products[index], index);
       },
     );
   }
 
-  Widget buildProduct(Product product) {
+  Widget buildProduct(BuildContext context, Product product, int index) {
     return Card(
       elevation: 4.0,
       child: Column(
@@ -42,35 +42,15 @@ class ProductList extends StatelessWidget {
           ButtonBar(
             children: [
               ElevatedButton(
-                onPressed: null, 
-                child: Text('View'),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/$index');
+                }, 
+                child: const Text('View'),
               )
             ],
           ),
         ],
       ),
     );
-    // return Container(
-    //   margin: const EdgeInsets.all(20.0),
-    //   child: Column(
-    //     children: [
-    //       ,
-    //       Padding(
-    //         padding: const EdgeInsets.only(
-    //           top: 10.0,
-    //           left: 5.0,
-    //           right: 5.0,
-    //         ),
-    //         child: Text(product.name),
-    //       ),
-    //     ],
-    //   ),
-    //   padding: const EdgeInsets.all(20.0),
-    //   decoration: BoxDecoration(
-    //     border: Border.all(
-    //       color: Colors.grey[300]!,
-    //     )
-    //   ),
-    // );
   }
 }
