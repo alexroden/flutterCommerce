@@ -6,9 +6,9 @@ import '../widgets/size_model.dart';
 
 class GetProduct extends StatelessWidget {
   final Product product;
-  var enabledButton = false;
+  final int index;
 
-  GetProduct({required this.product});
+  GetProduct({required this.product, required this.index});
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,7 +125,7 @@ class GetProduct extends StatelessWidget {
                 showModalBottomSheet(
                   context: context, 
                   builder: (BuildContext context){
-                    return SizeModel(product);
+                    return SizeModel(product, index);
                   }
                 );
               },

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:flutter_commerce/src/models/checkout_item.dart';
 
 import './../../utils/media_query_units.dart';
-
 import './../models/product.dart';
+import './../blocs/item_bloc.dart';
+
 
 class SizeModel extends StatefulWidget {
   const SizeModel(
     this.product,
+    this.index,
   );
 
   final Product product;
+  final int index;
 
   @override
   _SizeModelState createState() => _SizeModelState();
@@ -59,6 +62,8 @@ class _SizeModelState extends State<SizeModel> {
       vertical: mediaQuery['height']! * 0.2,
       horizontal: mediaQuery['width']!,
     );
+
+    final ItemBloc itemBloc = ItemBloc();
 
     final List<Widget> sizeSelectorWidgets = widget.product.sizes.map((String size) {
       return Container(
@@ -136,9 +141,16 @@ class _SizeModelState extends State<SizeModel> {
             child: ElevatedButton(
               onPressed: status ? () async {
                 startLoad();
-                await Future.delayed(const Duration(seconds: 3));
+                itemBloc.createItem(
+                  CheckoutItem(
+                    productId: widget.index,
+                    quantity: 1,
+                    size: selectedSize,
+                  ),
+                );
                 stopLoad();
                 Navigator.pop(context);
+                
                 const snackBar = SnackBar(
                   content: Text('Product added to basket'),
                 );

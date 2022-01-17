@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' show get;
 import 'dart:convert';
 
-import './models/product.dart';
-import './widgets/product_list.dart';
+import './screens/checkout.dart';
+import './screens/home.dart';
 import './screens/get_product.dart';
+import './models/product.dart';
 
 class App extends StatefulWidget {
   createState() {
@@ -34,36 +35,24 @@ class AppState extends State<App> {
 
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: ProductList(products),
-        appBar: AppBar(
-          title: const Text('Flutter Commerce'),
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/checkout');
-              }, 
-              icon: const Icon(
-                Icons.shopping_bag_outlined,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
+      home: Home(
+        products: products,
       ),
       onGenerateRoute: routes,
     );
   }
 
   Route routes(RouteSettings settings) {
-     if (settings.name != null && settings.name!.length > 1) {
-      // if (settings.name!.contains('checkout')) {
-      //   return MaterialPageRoute(
-      //     builder: (BuildContext context) {
-      //       return Checkout();
-      //     },
-      //   );
-      // }
+    if (settings.name != null && settings.name!.length > 1) {
+      if (settings.name!.contains('checkout')) {
+        return MaterialPageRoute(
+          builder: (BuildContext context) {
+            return  Checkout(
+              products: products, 
+            );
+          },
+        );
+      }
 
       final id = int.parse(settings.name!.replaceFirst('/', ''));
       Product product = products[id];
@@ -72,6 +61,7 @@ class AppState extends State<App> {
         builder: (BuildContext context) {
           return GetProduct(
             product: product,
+            index: id,
           );
         },
       );
@@ -79,7 +69,7 @@ class AppState extends State<App> {
 
     return MaterialPageRoute(
       builder: (BuildContext context) {
-        return ProductList(products);
+        return Home(products: products);
       },
     );
   }
